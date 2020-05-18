@@ -1,0 +1,10 @@
+{
+  "host": "smtp.gmail.com",
+  "port": "587",
+  "secure": false,
+  "auth": {
+    "user": "ismettestt@gmail.com",
+    "pass": "i071992Z*"
+  },
+  "from": "'Deneme 👻' <deneme@example.com>"
+}
