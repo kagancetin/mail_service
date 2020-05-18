@@ -5,8 +5,10 @@ node index.js
 Run at 3001 port
 
 POST /
+
 request JSON
 example:
+
 {
     "to":"test@totest.com",
     "cc":"test@cctest.com",
