@@ -3,8 +3,8 @@
   "port": "587",
   "secure": false,
   "auth": {
-    "user": "ismettestt@gmail.com",
-    "pass": "i071992Z*"
+    "user": "testt@gmail.com",
+    "pass": "mypassword"
   },
-  "from": "'Deneme 👻' <deneme@example.com>"
+  "from": "'Test Mail 👻' <test@example.com>"
 }
