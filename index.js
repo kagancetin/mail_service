@@ -10,8 +10,6 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.post("/", async function (req, res) {
-  console.log("sonuç", req.body);
-
   let transporter = nodemailer.createTransport({
     service: process.env.MAIL_SERVICE,
     auth: {
@@ -43,8 +41,6 @@ app.post("/", async function (req, res) {
 });
 
 app.post("/send-mail", async function (req, res) {
-  console.log("sonuç", req.body);
-
   let transporter = nodemailer.createTransport({
     service: process.env.MAIL_SERVICE,
     auth: {
