@@ -1,33 +1,39 @@
 var express = require("express");
 var nodemailer = require("nodemailer");
-var bodyParser = require("body-parser");
-var logger = require("morgan");
-var fs = require("fs");
+var morgan = require("morgan");
+var fs = require("fs").promises;
 
 var app = express();
 
-//middlewares
-app.use(bodyParser.json());
-app.use(logger("dev"));
+// middlewares
+app.use(express.json());  // body-parser yerine express.json() kullanıyoruz
+app.use(morgan("dev"));
 
-var mail_options;
+let mail_options;
 
-fs.readFile("mail_options.json", function (err, data) {
-  mail_options = JSON.parse(data);
-  console.log(mail_options);
-});
+async function loadMailOptions() {
+  try {
+    const data = await fs.readFile("mail_options.json", "utf-8");
+    mail_options = JSON.parse(data);
+    console.log(mail_options);
+  } catch (err) {
+    console.error("Error reading mail_options.json:", err);
+  }
+}
+
+loadMailOptions();
 
 app.post("/", async function (req, res) {
-  console.log("sonuc", req.body);
+  console.log("sonuç", req.body);
+
   let transporter = nodemailer.createTransport({
-    host: mail_options.host,
-    port: mail_options.port,
-    secure: mail_options.secure, // true for 465, false for other ports
+    service: "gmail",  // Gmail'i kullanacağımızı belirtiyoruz
     auth: {
-      user: mail_options.auth.user, // generated ethereal user
-      pass: mail_options.auth.pass, // generated ethereal password
+      user: mail_options.auth.user,
+      pass: mail_options.auth.pass,
     },
   });
+
   try {
     let info = await transporter.sendMail({
       from: mail_options.from,
@@ -50,7 +56,7 @@ app.post("/", async function (req, res) {
   }
 });
 
-const port = app.get("port") || 3001;
+const port = process.env.PORT || 3001;
 app.listen(port, () =>
-  console.log("Mail Service is listenning on port " + port)
+  console.log(`Mail Service is listening on port ${port}`)
 );
