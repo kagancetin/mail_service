@@ -17,6 +17,18 @@ example:
     "html":"<b>Test mail html</b>"
     }
 
+    POST /send-mail
+
+request JSON
+example:
+
+{
+    "from":"test@totest.com",
+    "subject":"Test Mail",
+    "text":"Test mail text",
+    "html":"<b>Test mail html</b>"
+    }
+
 response:
 {
     success: true,
