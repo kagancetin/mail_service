@@ -1,42 +1,28 @@
-var express = require("express");
-var nodemailer = require("nodemailer");
-var morgan = require("morgan");
-var fs = require("fs").promises;
+require("dotenv").config();
+const express = require("express");
+const nodemailer = require("nodemailer");
+const morgan = require("morgan");
 
-var app = express();
+const app = express();
 
 // middlewares
-app.use(express.json());  // body-parser yerine express.json() kullanıyoruz
+app.use(express.json());
 app.use(morgan("dev"));
-
-let mail_options;
-
-async function loadMailOptions() {
-  try {
-    const data = await fs.readFile("mail_options.json", "utf-8");
-    mail_options = JSON.parse(data);
-    console.log(mail_options);
-  } catch (err) {
-    console.error("Error reading mail_options.json:", err);
-  }
-}
-
-loadMailOptions();
 
 app.post("/", async function (req, res) {
   console.log("sonuç", req.body);
 
   let transporter = nodemailer.createTransport({
-    service: "gmail",  // Gmail'i kullanacağımızı belirtiyoruz
+    service: process.env.MAIL_SERVICE,
     auth: {
-      user: mail_options.auth.user,
-      pass: mail_options.auth.pass,
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
     },
   });
 
   try {
     let info = await transporter.sendMail({
-      from: mail_options.from,
+      from: process.env.MAIL_FROM,
       to: req.body.to,
       cc: req.body.cc,
       subject: req.body.subject,
